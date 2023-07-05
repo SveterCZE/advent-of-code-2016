@@ -1,5 +1,4 @@
 import re
-import copy
 
 def get_instructions():
     f = open("input.txt", "r")
@@ -80,7 +79,6 @@ def make_incremental_moves(player_coordinates, direction, step_count, visited_no
             player_coordinates = (player_coordinates[0],  player_coordinates[1] + 1)
         elif direction == "W":
             player_coordinates = (player_coordinates[0],  player_coordinates[1] - 1)
-        print(player_coordinates)
         if player_coordinates not in visited_nodes:
             visited_nodes.add(player_coordinates)
         else:

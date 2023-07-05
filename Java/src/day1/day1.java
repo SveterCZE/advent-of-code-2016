@@ -221,9 +221,9 @@ public class day1 {
 
         @Override
         public int hashCode(){
-            int hash = 713;
-            hash = 713 * hash + this.get_x_coord();
-            hash = 713 * hash + this.get_y_coord();
+            int hash = 31;
+            hash = 31 * hash + this.get_x_coord();
+            hash = 31 * hash + this.get_y_coord();
             return hash;
         }
     }
