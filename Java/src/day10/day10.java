@@ -99,7 +99,7 @@ public class day10 {
             this.bots_db.get(bot_no).insert_new_chip(passed_value.toString());
             if (this.bots_db.get(bot_no).can_bot_distribute())
                 this.ready_bots.add(this.bots_db.get(bot_no));
-            if (this.bots_db.get(bot_no).contains_destination_chips(61, 17))
+            if (this.bots_db.get(bot_no).contains_destination_chips())
                 return bot_no;
             return 0;
         }
@@ -149,10 +149,8 @@ public class day10 {
                 return new String[]{};
         }
 
-        private boolean contains_destination_chips(Integer chip1, Integer chip2){
-            return this.chips_held.contains(chip1) && this.chips_held.contains(chip2);
+        private boolean contains_destination_chips(){
+            return this.chips_held.contains(61) && this.chips_held.contains(17);
         }
-
     }
-
 }
