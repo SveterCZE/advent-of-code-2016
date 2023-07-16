@@ -53,6 +53,9 @@ public class day11 {
     }
 
     private static int make_individual_movements(List<int[]> list_of_instructions, Set<String> positions_db, int step_count){
+        System.out.print(step_count);
+        System.out.print(" ");
+        System.out.println(positions_db.size());
         // BASE CASE --- Any solution is final
         for (int[] checked_solution: list_of_instructions){
             if (is_final_solution(checked_solution))
