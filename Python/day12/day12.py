@@ -40,5 +40,5 @@ def part1(instructions, c_value):
 
 if __name__ == "__main__":
     instructions = get_instructions()
-    print(part1(instructions, 0))
-    print(part1(instructions, 1))
+    print(part1(instructions))
+    print(part1(instructions))

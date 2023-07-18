@@ -19,7 +19,7 @@ public class day13 {
     private static int recursive_helper(int fav_no, Coordinate target_destination, Set<Coordinate> visited_destinations, List<Coordinate> coordinates_queue, int step_count, int max_limit){
         if (max_limit > 0 && max_limit == step_count)
             return visited_destinations.size();
-        if (visited_destinations.contains(target_destination))
+        if (max_limit == 0 && visited_destinations.contains(target_destination))
             return step_count;
         List<Coordinate> next_step_destinations = new ArrayList<>();
         List<Coordinate> possible_new_steps = generate_new_steps(coordinates_queue, fav_no);

@@ -7,11 +7,11 @@ def part1(fav_no, target_destination, max_limit = False):
     
 def recursive_helper(fav_no, target_destination, visited_destinations, coordinates_queue, step_count, max_limit):
     # BASE CASE 1 --- Maximum number of steps have been achieved
-    if max_limit!= False and max_limit == step_count:
+    if max_limit != False and max_limit == step_count:
         return len(visited_destinations)
 
     # BASE CASE 2 --- The target destination had been reached
-    if target_destination in visited_destinations:
+    if max_limit == False and target_destination in visited_destinations:
         return step_count
     # RECURSIVE CASE --- Make one more step
     next_step_destinations = []
