@@ -19,36 +19,6 @@ def part2(instructions):
     valid_journeys = []
     return recursive_helper_p2(instructions, positions_DB, valid_journeys)
 
-def recursive_helper_p2(instructions, positions_DB, valid_journeys):
-    # BASE CASE --- No further steps possible
-    if len(positions_DB) == 0:
-        return len(valid_journeys[-1])
-    else:
-        new_moves_DB = []
-        for checked_position in positions_DB:
-            coordinate = checked_position[0]
-            steps_taken = checked_position[1]
-            possible_next_steps = generate_possible_next_steps(coordinate)
-            hashcode = generate_hashcode(instructions, steps_taken)
-            for i in range(len(possible_next_steps)):
-                if is_valid_coordinate(possible_next_steps[i]):
-                    if is_door_open(hashcode, i):
-                        new_coordinate = possible_next_steps[i]
-                        new_journey = copy.deepcopy(steps_taken)
-                        if i == 0:
-                            new_journey += "U"
-                        elif i == 1:
-                            new_journey += "D"
-                        elif i == 2:
-                            new_journey += "L"
-                        else:
-                            new_journey += "R"
-                        if new_coordinate == (3,3):
-                            valid_journeys.append(new_journey)
-                        else:
-                            new_moves_DB.append((new_coordinate, new_journey))
-        return recursive_helper_p2(instructions, new_moves_DB, valid_journeys)  
-
 def recursive_helper(instructions, positions_DB):
     # BASE CASE --- Target reached
     for checked_position in positions_DB:
@@ -58,25 +28,51 @@ def recursive_helper(instructions, positions_DB):
     else:
         new_moves_DB = []
         for checked_position in positions_DB:
-            coordinate = checked_position[0]
-            steps_taken = checked_position[1]
-            possible_next_steps = generate_possible_next_steps(coordinate)
-            hashcode = generate_hashcode(instructions, steps_taken)
+            steps_taken, possible_next_steps, hashcode = generate_ancillary_values(checked_position)
             for i in range(len(possible_next_steps)):
                 if is_valid_coordinate(possible_next_steps[i]):
                     if is_door_open(hashcode, i):
-                        new_coordinate = possible_next_steps[i]
-                        new_journey = copy.deepcopy(steps_taken)
-                        if i == 0:
-                            new_journey += "U"
-                        elif i == 1:
-                            new_journey += "D"
-                        elif i == 2:
-                            new_journey += "L"
-                        else:
-                            new_journey += "R"
+                        new_coordinate, new_journey = generate_new_coord_and_journey(possible_next_steps, steps_taken, i)
                         new_moves_DB.append((new_coordinate, new_journey))
         return recursive_helper(instructions, new_moves_DB)
+
+def recursive_helper_p2(instructions, positions_DB, valid_journeys):
+    # BASE CASE --- No further steps possible
+    if len(positions_DB) == 0:
+        return len(valid_journeys[-1])
+    else:
+        new_moves_DB = []
+        for checked_position in positions_DB:
+            steps_taken, possible_next_steps, hashcode = generate_ancillary_values(checked_position)
+            for i in range(len(possible_next_steps)):
+                if is_valid_coordinate(possible_next_steps[i]):
+                    if is_door_open(hashcode, i):
+                        new_coordinate, new_journey = generate_new_coord_and_journey(possible_next_steps, steps_taken, i)
+                        if new_coordinate == (3,3):
+                            valid_journeys.append(new_journey)
+                        else:
+                            new_moves_DB.append((new_coordinate, new_journey))
+        return recursive_helper_p2(instructions, new_moves_DB, valid_journeys)  
+
+def generate_ancillary_values(checked_position):
+    coordinate = checked_position[0]
+    steps_taken = checked_position[1]
+    possible_next_steps = generate_possible_next_steps(coordinate)
+    hashcode = generate_hashcode(instructions, steps_taken)
+    return steps_taken, possible_next_steps, hashcode
+
+def generate_new_coord_and_journey(possible_next_steps, steps_taken, i):
+    new_coordinate = possible_next_steps[i]
+    new_journey = copy.deepcopy(steps_taken)
+    if i == 0:
+        new_journey += "U"
+    elif i == 1:
+        new_journey += "D"
+    elif i == 2:
+        new_journey += "L"
+    else:
+        new_journey += "R"
+    return new_coordinate, new_journey
 
 def generate_possible_next_steps(coordinate):
     up = (coordinate[0] - 1, coordinate[1])
