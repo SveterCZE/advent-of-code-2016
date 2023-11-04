@@ -10,17 +10,44 @@ def part1(instructions):
     coordinate = (0,0)
     steps_taken=""
     positions_DB = [(coordinate, steps_taken)]
-    # valid_journeys = []
     return recursive_helper(instructions, positions_DB)
 
-# def part2(instructions):
-#     coordinate = (0,0)
-#     steps_taken=""
-#     positions_DB = [(coordinate, steps_taken)]
-#     valid_journeys = []
-#     recursive_helper_p2(instructions, positions_DB, valid_journeys)
-#     return len(valid_journeys[:-1])
+def part2(instructions):
+    coordinate = (0,0)
+    steps_taken=""
+    positions_DB = [(coordinate, steps_taken)]
+    valid_journeys = []
+    return recursive_helper_p2(instructions, positions_DB, valid_journeys)
 
+def recursive_helper_p2(instructions, positions_DB, valid_journeys):
+    # BASE CASE --- No further steps possible
+    if len(positions_DB) == 0:
+        return len(valid_journeys[-1])
+    else:
+        new_moves_DB = []
+        for checked_position in positions_DB:
+            coordinate = checked_position[0]
+            steps_taken = checked_position[1]
+            possible_next_steps = generate_possible_next_steps(coordinate)
+            hashcode = generate_hashcode(instructions, steps_taken)
+            for i in range(len(possible_next_steps)):
+                if is_valid_coordinate(possible_next_steps[i]):
+                    if is_door_open(hashcode, i):
+                        new_coordinate = possible_next_steps[i]
+                        new_journey = copy.deepcopy(steps_taken)
+                        if i == 0:
+                            new_journey += "U"
+                        elif i == 1:
+                            new_journey += "D"
+                        elif i == 2:
+                            new_journey += "L"
+                        else:
+                            new_journey += "R"
+                        if new_coordinate == (3,3):
+                            valid_journeys.append(new_journey)
+                        else:
+                            new_moves_DB.append((new_coordinate, new_journey))
+        return recursive_helper_p2(instructions, new_moves_DB, valid_journeys)  
 
 def recursive_helper(instructions, positions_DB):
     # BASE CASE --- Target reached
@@ -33,7 +60,6 @@ def recursive_helper(instructions, positions_DB):
         for checked_position in positions_DB:
             coordinate = checked_position[0]
             steps_taken = checked_position[1]
-            # Generate possible next steps
             possible_next_steps = generate_possible_next_steps(coordinate)
             hashcode = generate_hashcode(instructions, steps_taken)
             for i in range(len(possible_next_steps)):
@@ -79,4 +105,4 @@ def is_door_open(hashcode, position):
 if __name__ == "__main__":
     instructions = get_instructions()
     print(part1(instructions))
-    # print(part1(instructions, 35651584))
+    print(part2(instructions))
