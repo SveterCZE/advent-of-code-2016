@@ -25,21 +25,21 @@ def recursive_helper(instructions, positions_DB):
         if checked_position[0] == (3,3):
             return checked_position[1]
     # RECURSIVE CASE --- Explore potential alternative ways
-    else:
-        new_moves_DB = []
-        for checked_position in positions_DB:
-            steps_taken, possible_next_steps, hashcode = generate_ancillary_values(checked_position)
-            for i in range(len(possible_next_steps)):
-                if is_valid_coordinate(possible_next_steps[i]):
-                    if is_door_open(hashcode, i):
-                        new_coordinate, new_journey = generate_new_coord_and_journey(possible_next_steps, steps_taken, i)
-                        new_moves_DB.append((new_coordinate, new_journey))
-        return recursive_helper(instructions, new_moves_DB)
+    new_moves_DB = []
+    for checked_position in positions_DB:
+        steps_taken, possible_next_steps, hashcode = generate_ancillary_values(checked_position)
+        for i in range(len(possible_next_steps)):
+            if is_valid_coordinate(possible_next_steps[i]):
+                if is_door_open(hashcode, i):
+                    new_coordinate, new_journey = generate_new_coord_and_journey(possible_next_steps, steps_taken, i)
+                    new_moves_DB.append((new_coordinate, new_journey))
+    return recursive_helper(instructions, new_moves_DB)
 
 def recursive_helper_p2(instructions, positions_DB, valid_journeys):
     # BASE CASE --- No further steps possible
     if len(positions_DB) == 0:
         return len(valid_journeys[-1])
+    # RECURSIVE CASE --- Explore potential alternative ways
     else:
         new_moves_DB = []
         for checked_position in positions_DB:
