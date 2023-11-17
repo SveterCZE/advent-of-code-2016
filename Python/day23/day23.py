@@ -10,7 +10,6 @@ def part1(instructions, starting_value):
     registers["a"], registers["b"], registers["c"], registers["d"] = starting_value, 0, 0, 0
     pointer = 0
     while True:
-        print(pointer, registers)
         checked_instruction = instructions[pointer]
         if checked_instruction[0] == "cpy" and is_valid_instruction(checked_instruction):
             try:
